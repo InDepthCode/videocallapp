@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 public class UserService {
     private static final List<User> USER_LIST = new ArrayList<>();
 
-    public void registerUser(User user){
+    public void register(User user){
         user.setStatus("online");
         USER_LIST.add(user);
     }
