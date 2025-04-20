@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public void logout(String email){
+    public void logout(@RequestBody  String email){
        userService.logout(email);
 
     }

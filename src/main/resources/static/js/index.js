@@ -6,13 +6,11 @@ function displayUsers(userList, userListElement) {
     userList.forEach(user => {
         const listItems = document.createElement("li");
         listItems.innerHTML= `
-            
             <div>
             <i class = "fa fa-user-circle"></i>
             ${user.username} <i class="user-email"> (${user.email})</i>
-            </div>
-            
              <i class="fa fa-lightbulb-o ${user.status === "online" ? "online" : "offline"}"></i>
+             </div>
         `;
 
         userListElement.appendChild(listItems);
@@ -20,6 +18,14 @@ function displayUsers(userList, userListElement) {
 }
 
 function loadAndDisplayUsers(){
+
+    // check if user is connected
+
+    const connectedUser = localStorage.getItem('connectedUser');
+    if(!connectedUser){
+        window.location = "login.html"
+        return;
+    }
     const userListElement = document.getElementById("userList");
     
     userListElement.innerHTML="Loading....";
@@ -35,3 +41,22 @@ function loadAndDisplayUsers(){
 }
 
 window.addEventListener("load" ,loadAndDisplayUsers);
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+function handleLogout() {
+    fetch('http://localhost:8080/api/v1/users/logout' , {
+        method: 'POST',
+        headers:{
+            'Content-type': 'application/json'
+        },
+        body: localStorage.getItem('connectedUser')
+    }).then((response) => {
+        return response;
+    }).then((data) => {
+        localStorage.removeItem('connectedUser');
+        window.location.href = "login.html"
+    })
+}
+
+logoutBtn.addEventListener("click", handleLogout)
